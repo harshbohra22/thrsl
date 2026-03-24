@@ -1,0 +1,18 @@
+# -----------------------------------------------------------
+# Config Service — Docker profile
+# Docker mein "localhost" ki jagah container name use hota hai
+# Yeh profile docker-compose.yml mein SPRING_PROFILES_ACTIVE=docker se activate hoga
+# -----------------------------------------------------------
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config

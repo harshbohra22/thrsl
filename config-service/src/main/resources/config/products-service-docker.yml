@@ -1,0 +1,11 @@
+# -----------------------------------------------------------
+# Products Service — Docker config (served by Config Service)
+# Eureka URL: "discovery-service" container name
+# -----------------------------------------------------------
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
