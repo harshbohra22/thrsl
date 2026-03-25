@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.thrsl</groupId>
+    <artifactId>thrsl-backend-poc</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>thrsl-backend-poc</name>
+    <description>Aggregator POM for THRS Microservices POC</description>
+
+    <modules>
+        <module>config-service</module>
+        <module>discovery-service</module>
+        <module>auth-service</module>
+        <module>products-service</module>
+        <module>gateway-service</module>
+    </modules>
+</project>

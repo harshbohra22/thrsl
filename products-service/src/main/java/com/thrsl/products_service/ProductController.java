@@ -10,11 +10,11 @@ public class ProductController {
 
     @GetMapping
     public String getProductsRoot() {
-        return "Welcome to the Products Service API! The routing from API Gateway is working successfully!";
+        return "Welcome ji";
     }
 
     @GetMapping("/hello")
     public String getHelloProduct() {
-        return "Hello from Products Service! Routing is working successfully via API Gateway!";
+        return "Hello  lelo";
     }
 }
