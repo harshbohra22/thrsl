@@ -14,16 +14,49 @@ spring:
           uri: lb://products-service
           predicates:
             - Path=/products/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: productsCircuitBreaker
+                fallbackUri: forward:/fallback/products
         - id: auth-service
           uri: lb://auth-service
           predicates:
-            - Path=/auth/**
+            - Path=/auth/**, /oauth2/**, /login/oauth2/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: authCircuitBreaker
+                fallbackUri: forward:/fallback/auth
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+    instances:
+      productsCircuitBreaker:
+        baseConfig: default
+      authCircuitBreaker:
+        baseConfig: default
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 3s
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
+        include: "*"
   endpoint:
     health:
       show-details: always
+    gateway:
+      enabled: true

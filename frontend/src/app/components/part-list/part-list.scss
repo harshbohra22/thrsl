@@ -1,0 +1,213 @@
+.page-section { padding: var(--space-3xl) 0; }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  font-size: 0.85rem;
+
+  &__link {
+    color: var(--color-accent-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    &:hover { color: var(--color-accent-primary); text-decoration: underline; }
+  }
+  &__sep { color: var(--color-text-muted); }
+  &__current { color: var(--color-text-secondary); }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-sm);
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+
+  strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+}
+
+.parts-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--gradient-card);
+}
+
+.parts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+
+  thead tr {
+    background: rgba(99, 102, 241, 0.08);
+    border-bottom: 1px solid var(--color-border);
+
+    th {
+      padding: var(--space-lg) var(--space-xl);
+      text-align: left;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+  }
+
+  &__row {
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--transition-fast);
+    animation: fadeInUp 0.4s ease both;
+
+    &:last-child { border-bottom: none; }
+    &:hover {
+      background: rgba(99, 102, 241, 0.04);
+      .parts-table__img { transform: scale(1.1); }
+    }
+
+    td {
+      padding: var(--space-lg) var(--space-xl);
+      vertical-align: middle;
+    }
+  }
+
+  &__img-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    position: relative;
+
+    &:hover .parts-table__img-hover {
+      opacity: 1;
+    }
+  }
+
+  &__img-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(99, 102, 241, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform var(--transition-normal);
+  }
+
+  &__img-placeholder {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+  }
+
+  &__part-num {
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-accent-cyan);
+    white-space: nowrap;
+  }
+
+  &__name {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+  }
+
+  &__desc {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    max-width: 320px;
+  }
+
+  &__category-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-accent-secondary);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+  }
+
+  &__weight {
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  &__price {
+    font-weight: 600;
+    color: var(--color-accent-emerald);
+    white-space: nowrap;
+  }
+
+  &__avail {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    text-transform: capitalize;
+    white-space: nowrap;
+  }
+}
+
+// Availability colors
+.avail--in-stock {
+  color: var(--color-accent-emerald);
+  background: rgba(52, 211, 153, 0.12);
+}
+.avail--low-stock {
+  color: var(--color-accent-amber);
+  background: rgba(251, 191, 36, 0.12);
+}
+.avail--out-of-stock {
+  color: var(--color-accent-rose);
+  background: rgba(251, 113, 133, 0.12);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl);
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+}

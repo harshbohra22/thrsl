@@ -1,5 +1,36 @@
 server:
   port: 0
+  forward-headers-strategy: framework
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_db
+    driver-class-name: org.postgresql.Driver
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # ---- OAuth2 Social Login (local dev) ----
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_GOOGLE_CLIENT_ID
+            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            scope: openid, profile, email
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+          github:
+            client-id: YOUR_GITHUB_CLIENT_ID
+            client-secret: YOUR_GITHUB_CLIENT_SECRET
+            scope: read:user, user:email
+            redirect-uri: http://localhost:8080/login/oauth2/code/github
 
 eureka:
   client:
@@ -14,3 +45,6 @@ management:
   endpoint:
     health:
       show-details: always
+
+app:
+  frontend-redirect-url: http://localhost:4200/oauth2/callback

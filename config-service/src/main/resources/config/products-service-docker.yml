@@ -9,3 +9,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://discovery-service:8761/eureka/
+
+spring:
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true

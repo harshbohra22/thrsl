@@ -1,0 +1,75 @@
+<section class="auth-page">
+  <div class="auth-card glass page-enter">
+    <div class="auth-card__header">
+      <div class="logo">
+        <span class="logo__icon">⚙️</span>
+        <span class="logo__text">THRSL</span>
+      </div>
+      <h1 class="auth-card__title">Create Account</h1>
+      <p class="auth-card__subtitle">Join the elite robot parts marketplace.</p>
+    </div>
+
+    @if (success) {
+      <div class="auth-success fade-in">
+        <h3>Success!</h3>
+        <p>Your account has been created. Redirecting to login...</p>
+      </div>
+    } @else {
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="name" 
+              formControlName="name" 
+              placeholder="John Doe"
+              [class.invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email" 
+              placeholder="name@company.com"
+              [class.invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password" 
+              placeholder="••••••••"
+              [class.invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          </div>
+        </div>
+
+        @if (error) {
+          <div class="auth-error fade-in">
+            {{ error }}
+          </div>
+        }
+
+        <button type="submit" [disabled]="registerForm.invalid || loading" class="auth-button">
+          @if (!loading) {
+            <span>Register</span>
+          } @else {
+            <span class="spinner"></span>
+          }
+        </button>
+      </form>
+    }
+
+    <div class="auth-card__footer">
+      Already have an account? <a routerLink="/login">Sign In</a>
+    </div>
+  </div>
+</section>

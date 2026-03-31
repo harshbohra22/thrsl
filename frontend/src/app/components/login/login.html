@@ -1,0 +1,71 @@
+<section class="auth-page">
+  <div class="auth-card glass page-enter">
+    <div class="auth-card__header">
+      <div class="logo">
+        <span class="logo__icon">⚙️</span>
+        <span class="logo__text">THRSL</span>
+      </div>
+      <h1 class="auth-card__title">Welcome Back</h1>
+      <p class="auth-card__subtitle">Please enter your details to sign in.</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <div class="form-group">
+        <label for="username">Email Address</label>
+        <div class="input-wrapper">
+          <input 
+            type="email" 
+            id="username" 
+            formControlName="username" 
+            placeholder="name@company.com"
+            [class.invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            placeholder="••••••••"
+            [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        </div>
+      </div>
+
+      @if (error) {
+        <div class="auth-error fade-in">
+          {{ error }}
+        </div>
+      }
+
+      <button type="submit" [disabled]="loginForm.invalid || loading" class="auth-button">
+        @if (!loading) {
+          <span>Sign In</span>
+        } @else {
+          <span class="spinner"></span>
+        }
+      </button>
+
+      <div class="divider">
+        <span>or continue with</span>
+      </div>
+
+      <div class="social-login">
+        <button type="button" class="social-button google" (click)="loginWithGoogle()">
+          <img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" alt="G" class="social-icon">
+          Google
+        </button>
+        <button type="button" class="social-button github" (click)="loginWithGitHub()">
+          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GH" class="social-icon">
+          GitHub
+        </button>
+      </div>
+    </form>
+
+    <div class="auth-card__footer">
+      Don't have an account? <a routerLink="/register">Register now</a>
+    </div>
+  </div>
+</section>

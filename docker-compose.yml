@@ -58,13 +58,21 @@ services:
   auth-service:
     build: ./auth-service
     container_name: auth-service
+    ports:
+      - "8082:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888/
+      - GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+      - GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET
+      - GITHUB_CLIENT_ID=YOUR_GITHUB_CLIENT_ID
+      - GITHUB_CLIENT_SECRET=YOUR_GITHUB_CLIENT_SECRET
     depends_on:
       config-service:
         condition: service_healthy
       discovery-service:
+        condition: service_healthy
+      postgres-db:
         condition: service_healthy
     networks:
       - thrsl-network
@@ -87,7 +95,54 @@ services:
       - thrsl-network
 
   # ──────────────────────────────────────────────────────────────────
-  # 5. Gateway Service  (Port 8080)  — Sabse last mein start hoga
+  # 5. PostgreSQL Database Service (Port 5432)
+  # ──────────────────────────────────────────────────────────────────
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=auth_db
+    networks:
+      - thrsl-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d auth_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ──────────────────────────────────────────────────────────────────
+  # 6. Redis Service (Port 6379) — Used for Rate Limiting
+  # ──────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - thrsl-network
+
+  # ──────────────────────────────────────────────────────────────────
+  # 6. Keycloak Service (Port 8081) — Identity Provider
+  # ──────────────────────────────────────────────────────────────────
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.2
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command: start-dev
+    ports:
+      - "8081:8080"
+    networks:
+      - thrsl-network
+
+  # ──────────────────────────────────────────────────────────────────
+  # 7. Gateway Service (Port 8080) — Sabse last mein start hoga
   # ──────────────────────────────────────────────────────────────────
   gateway-service:
     build: ./gateway-service
@@ -96,12 +151,16 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888/
+      - SPRING_CONFIG_IMPORT=configserver:http://config-service:8888/
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
     depends_on:
       config-service:
         condition: service_healthy
       discovery-service:
         condition: service_healthy
+      redis:
+        condition: service_started
       auth-service:
         condition: service_started
       products-service:

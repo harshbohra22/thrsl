@@ -1,0 +1,61 @@
+<section class="page-section page-enter">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a routerLink="/categories" class="breadcrumb__link">Categories</a>
+      <span class="breadcrumb__sep">›</span>
+      <span class="breadcrumb__current">{{ category?.name }}</span>
+    </nav>
+
+    <div class="page-header">
+      <div class="page-header__icon">{{ category?.icon }}</div>
+      <h1 class="page-title">{{ category?.name }}</h1>
+      <p class="page-subtitle">{{ category?.description }}</p>
+    </div>
+
+    <div class="robot-grid">
+      @for (robot of robots; track robot.id; let i = $index) {
+        <div class="robot-card" [style.animation-delay]="(i * 100) + 'ms'">
+          <div class="robot-card__image-container" 
+               *ngIf="robot.imageUrl" 
+               (click)="openModal(robot.imageUrl, robot.name)">
+            <img [src]="robot.imageUrl" [alt]="robot.name" class="robot-card__img">
+            <div class="robot-card__zoom-hint">🔍 Click to zoom</div>
+          </div>
+          <div class="robot-card__image-container" *ngIf="!robot.imageUrl">
+            <div class="robot-card__img-placeholder">
+              <span>🤖</span>
+            </div>
+          </div>
+          <div class="robot-card__header">
+            <div class="robot-card__model-badge">{{ robot.model }}</div>
+            <span class="robot-card__status" [class]="getStatusClass(robot.status)">
+              {{ robot.status }}
+            </span>
+          </div>
+
+          <div class="robot-card__body">
+            <h3 class="robot-card__name">{{ robot.name }}</h3>
+            <p class="robot-card__manufacturer">by {{ robot.manufacturer }}</p>
+            <p class="robot-card__desc">{{ robot.description }}</p>
+          </div>
+
+          <div class="robot-card__footer">
+            <span class="robot-card__parts-count">🔩 {{ robot.partCount }} Parts</span>
+            <a [routerLink]="['/robots', robot.id, 'parts']" class="robot-card__btn">
+              View Parts →
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (selectedImage) {
+    <app-image-modal 
+      [imageUrl]="selectedImage" 
+      [altText]="selectedAltText"
+      (close)="closeModal()">
+    </app-image-modal>
+  }
+</section>

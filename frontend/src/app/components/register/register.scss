@@ -1,0 +1,13 @@
+@import '../login/login.scss';
+
+.auth-success {
+  background: rgba(34, 211, 238, 0.1);
+  color: #cffafe;
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-xl);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+
+  h3 { margin-bottom: var(--space-xs); color: var(--color-accent-secondary); }
+  p { font-size: 0.9rem; opacity: 0.8; }
+}

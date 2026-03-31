@@ -1,0 +1,8 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="onClose()">×</button>
+    <div class="modal-image-wrapper">
+      <img [src]="imageUrl" [alt]="altText" class="modal-image">
+    </div>
+  </div>
+</div>

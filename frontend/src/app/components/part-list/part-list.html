@@ -1,0 +1,83 @@
+<section class="page-section page-enter">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a routerLink="/categories" class="breadcrumb__link">Categories</a>
+      <span class="breadcrumb__sep">›</span>
+      @if (robot) {
+        <a [routerLink]="['/categories', robot.categoryId, 'robots']" class="breadcrumb__link">
+          Robots
+        </a>
+        <span class="breadcrumb__sep">›</span>
+        <span class="breadcrumb__current">{{ robot.name }}</span>
+      }
+    </nav>
+
+    <div class="page-header">
+      <h1 class="page-title">{{ robot?.name }} — Spare Parts</h1>
+      <p class="page-subtitle">
+        Model: <strong>{{ robot?.model }}</strong> &nbsp;|&nbsp; Manufacturer: <strong>{{ robot?.manufacturer }}</strong>
+      </p>
+    </div>
+
+    <!-- Parts Table -->
+    <div class="parts-table-wrapper">
+      <table class="parts-table">
+        <thead>
+          <tr>
+            <th>Preview</th>
+            <th>Part Number</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Weight</th>
+            <th>Price</th>
+            <th>Availability</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (part of parts; track part.id; let i = $index) {
+            <tr class="parts-table__row" [style.animation-delay]="(i * 50) + 'ms'">
+              <td>
+                @if (part.imageUrl) {
+                  <div class="parts-table__img-wrapper clickable" (click)="openModal(part.imageUrl, part.name)">
+                    <img [src]="part.imageUrl" [alt]="part.name" class="parts-table__img">
+                    <div class="parts-table__img-hover">🔍</div>
+                  </div>
+                } @else {
+                  <div class="parts-table__img-placeholder">⚙️</div>
+                }
+              </td>
+              <td class="parts-table__part-num">{{ part.partNumber }}</td>
+              <td>
+                <div class="parts-table__name">{{ part.name }}</div>
+                <div class="parts-table__desc">{{ part.description }}</div>
+              </td>
+              <td><span class="parts-table__category-tag">{{ part.category }}</span></td>
+              <td class="parts-table__weight">{{ part.weight }}</td>
+              <td class="parts-table__price">{{ formatPrice(part.price) }}</td>
+              <td>
+                <span class="parts-table__avail" [class]="getAvailabilityClass(part.availability)">
+                  {{ part.availability.replace('-', ' ') }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (parts.length === 0) {
+      <div class="empty-state">
+        <p>No parts found for this robot.</p>
+      </div>
+    }
+  </div>
+
+  @if (selectedImage) {
+    <app-image-modal 
+      [imageUrl]="selectedImage" 
+      [altText]="selectedAltText"
+      (close)="closeModal()">
+    </app-image-modal>
+  }
+</section>
